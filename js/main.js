@@ -268,7 +268,7 @@
     const statR = document.getElementById("statRegions");
     if (!statM && !statD && !statR) return; // ეს არ არის მთავარი გვერდი
 
-    if (statM) statM.textContent = "51";
+    if (statM) statM.textContent = "52";
     if (statD) animateCount(statD, delegates.length);
     if (statR) animateCount(statR, uniqueRegions(municipalities).length);
 
