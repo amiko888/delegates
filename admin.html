@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ადმინ პანელი — დელეგატთა ქსელი</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- საიტის ზედა ზოლი -->
+  <header class="site-header admin-header">
+    <div class="container admin-header-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">ახ</span>
+        <span>
+          <strong>ახალგაზრდობის სააგენტო</strong>
+          <small class="admin-badge">ადმინ პანელი 🔒</small>
+        </span>
+      </a>
+      <div class="admin-nav-actions">
+        <a href="index.html" class="btn btn-ghost btn-sm" target="_blank">საიტზე გადასვლა ↗</a>
+        <button id="logoutBtn" class="btn btn-secondary btn-sm" style="display: none;">გამოსვლა 🚪</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main container">
+
+    <!-- 1. ავტორიზაციის ფორმა (თუ მომხმარებელი არ არის შესული) -->
+    <section id="loginSection" class="admin-login-wrap">
+      <div class="admin-login-card">
+        <div class="login-icon">🔒</div>
+        <h2>ადმინისტრირება</h2>
+        <p class="login-subtitle">შეიყვანეთ ადმინისტრატორის პაროლი ნახვების სტატისტიკაზე წვდომისთვის</p>
+
+        <div id="loginError" class="alert alert-error" style="display: none;"></div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="adminPassword">პაროლი</label>
+            <div class="password-input-wrap">
+              <input type="password" id="adminPassword" placeholder="შეიყვანეთ პაროლი..." required autocomplete="current-password">
+              <button type="button" id="togglePasswordBtn" class="toggle-pass-btn" aria-label="პაროლის ჩვენება">👁️</button>
+            </div>
+          </div>
+          <button type="submit" id="loginSubmitBtn" class="btn btn-primary btn-block">შესვლა →</button>
+        </form>
+
+        <div class="login-footer-hint">
+          <small>საწყისი პაროლი: <code>admin123</code> (შესვლის შემდეგ შეგიძლიათ შეცვალოთ)</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. მთავარი დაშბორდი (ავტორიზაციის შემდეგ) -->
+    <section id="dashboardSection" class="admin-dashboard" style="display: none;">
+
+      <!-- მისალმება და სწრაფი მოქმედებები -->
+      <div class="dashboard-topbar">
+        <div>
+          <h1 class="page-title">პროფილის ნახვების სტატისტიკა</h1>
+          <p class="page-subtitle">დელეგატების ნახვების რეალურ დროში მონიტორინგი და მართვა</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="changePassModalOpenBtn" class="btn btn-ghost btn-sm">🔑 პაროლის შეცვლა</button>
+          <button id="refreshStatsBtn" class="btn btn-ghost btn-sm">🔄 განახლება</button>
+          <button id="exportCsvBtn" class="btn btn-primary btn-sm">📥 Excel / CSV ექსპორტი</button>
+        </div>
+      </div>
+
+      <!-- KPI ბარათები (მთავარი მაჩვენებლები) -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">📊</div>
+          <div class="kpi-data">
+            <span class="kpi-label">სულ ნახვები</span>
+            <strong id="kpiTotalViews" class="kpi-value">0</strong>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-data">
+            <span class="kpi-label">დელეგატთა რაოდენობა</span>
+            <strong id="kpiTotalDelegates" class="kpi-value">0</strong>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon">📈</div>
+          <div class="kpi-data">
+            <span class="kpi-label">საშუალო ნახვა</span>
+            <strong id="kpiAvgViews" class="kpi-value">0</strong>
+          </div>
+        </div>
+
+        <div class="kpi-card highlight">
+          <div class="kpi-icon">🏆</div>
+          <div class="kpi-data">
+            <span class="kpi-label">ყველაზე ნახვადი</span>
+            <strong id="kpiTopDelegate" class="kpi-value">-</strong>
+            <small id="kpiTopCount" class="kpi-sub">-</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- ფილტრები და ძიება -->
+      <div class="filter-panel">
+        <div class="search-box">
+          <input type="text" id="adminSearch" placeholder="ძებნა სახელით ან მუნიციპალიტეტით...">
+        </div>
+        <div class="filter-controls">
+          <select id="adminRegionFilter">
+            <option value="">ყველა რეგიონი</option>
+          </select>
+
+          <select id="adminSortBy">
+            <option value="views-desc">ნახვები: კლებადობით ↓</option>
+            <option value="views-asc">ნახვები: ზრდადობით ↑</option>
+            <option value="name-asc">სახელი: ა-ჰ</option>
+            <option value="region-asc">რეგიონი: ა-ჰ</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- დელეგატების სია / ცხრილი -->
+      <div class="table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th>დელეგატი</th>
+              <th>მუნიციპალიტეტი</th>
+              <th>რეგიონი</th>
+              <th style="width: 220px;">ნახვების რაოდენობა</th>
+              <th style="width: 150px; text-align: right;">მოქმედება</th>
+            </tr>
+          </thead>
+          <tbody id="delegatesTableBody">
+            <!-- გენერირდება js/admin.js-დან -->
+          </tbody>
+        </table>
+        <div id="noResultsNotice" class="empty-notice" style="display: none;">
+          შესატყვისი დელეგატი ვერ მოიძებნა
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- მოდალი: პაროლის შეცვლა -->
+  <div id="passwordModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🔑 პაროლის შეცვლა</h3>
+        <button id="closePassModalBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="changePasswordForm">
+        <div id="passChangeMsg" class="alert" style="display: none;"></div>
+        <div class="form-group">
+          <label for="currPassInput">მიმდინარე პაროლი</label>
+          <input type="password" id="currPassInput" required placeholder="ძველი პაროლი...">
+        </div>
+        <div class="form-group">
+          <label for="newPassInput">ახალი პაროლი</label>
+          <input type="password" id="newPassInput" minlength="4" required placeholder="ახალი პაროლი (მინ. 4 სიმბოლო)...">
+        </div>
+        <div class="form-group">
+          <label for="confirmPassInput">გაიმეორეთ ახალი პაროლი</label>
+          <input type="password" id="confirmPassInput" minlength="4" required placeholder="გაიმეორეთ პაროლი...">
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="cancelPassModalBtn" class="btn btn-ghost">გაუქმება</button>
+          <button type="submit" class="btn btn-primary">შენახვა</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- მოდალი: ნახვის რედაქტირება / განულება -->
+  <div id="editCountModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="editModalTitle">ნახვების რედაქტირება</h3>
+        <button id="closeEditModalBtn" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="editCountForm">
+        <div id="editCountMsg" class="alert" style="display: none;"></div>
+        <p id="editDelegateName" class="modal-subtext"></p>
+        <div class="form-group">
+          <label for="newCountInput">ნახვების რაოდენობა</label>
+          <input type="number" id="newCountInput" min="0" step="1" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="setZeroBtn" class="btn btn-ghost text-danger">განულება (0)</button>
+          <button type="button" id="cancelEditModalBtn" class="btn btn-ghost">გაუქმება</button>
+          <button type="submit" class="btn btn-primary">განახლება</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- სკრიპტები -->
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
