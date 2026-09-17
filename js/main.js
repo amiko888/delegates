@@ -43,12 +43,6 @@
     });
   }
 
-  function delegatesFor(municipalityName) {
-    return typeof delegates !== "undefined"
-      ? delegates.filter((d) => d.municipality === municipalityName)
-      : [];
-  }
-
   function fullName(person) {
     return person.surname ? person.name + " " + person.surname : person.name;
   }
@@ -208,26 +202,6 @@
 
   /* ---------- ბარათების შემქმნელები ---------- */
 
-  function municipalityCard(m, index) {
-    const card = el("a", "municipality-card");
-    card.href = "municipality.html?name=" + encodeURIComponent(m.name);
-
-    const number = String((index || 0) + 1).padStart(2, "0");
-    card.appendChild(el("span", "municipality-number", number));
-
-    const body = el("div");
-    body.appendChild(el("span", "card-location", m.region));
-    body.appendChild(el("h3", null, m.name));
-    const count = delegatesFor(m.name).length;
-    body.appendChild(
-      el("p", null, count === 0 ? "დელეგატი ჯერ არ არის დამატებული" : count + " დელეგატი")
-    );
-    card.appendChild(body);
-
-    card.appendChild(el("span", "card-arrow", "→"));
-    return card;
-  }
-
   function delegateCard(d) {
     const card = el("a", "delegate-card");
     card.href = "delegate.html?id=" + encodeURIComponent(d.id);
@@ -238,7 +212,7 @@
 
     const body = el("div", "card-body");
     body.appendChild(el("h3", null, d.name));
-    body.appendChild(el("p", null, d.municipality + " · " + d.region));
+    body.appendChild(el("p", "delegate-location", d.municipality + " · " + d.region));
     const meta = el("div", "card-meta");
     meta.appendChild(el("span", "small-link", "პროფილის ნახვა →"));
     body.appendChild(meta);
@@ -294,14 +268,9 @@
     const statR = document.getElementById("statRegions");
     if (!statM && !statD && !statR) return; // ეს არ არის მთავარი გვერდი
 
-    if (statM) animateCount(statM, municipalities.length);
+    if (statM) statM.textContent = "51";
     if (statD) animateCount(statD, delegates.length);
     if (statR) animateCount(statR, uniqueRegions(municipalities).length);
-
-    const featM = document.getElementById("featuredMunicipalities");
-    if (featM) {
-      municipalities.slice(0, 4).forEach((m, i) => featM.appendChild(municipalityCard(m, i)));
-    }
 
     renderFeaturedDelegates();
 
@@ -335,36 +304,6 @@
     } else {
       requestAnimationFrame(tick);
     }
-  }
-
-  /* ---------- მუნიციპალიტეტების გვერდი ---------- */
-
-  function renderMunicipalitiesPage() {
-    const list = document.getElementById("municipalityList");
-    if (!list) return;
-
-    const searchInput = document.getElementById("municipalitySearch");
-    const regionSelect = document.getElementById("regionFilter");
-    const empty = document.getElementById("municipalityEmpty");
-
-    populateSelect(regionSelect, uniqueRegions(municipalities));
-
-    function draw() {
-      const q = (searchInput.value || "").trim().toLowerCase();
-      const region = regionSelect.value;
-      list.innerHTML = "";
-      const filtered = municipalities.filter((m) => {
-        const matchesQuery = !q || m.name.toLowerCase().includes(q);
-        const matchesRegion = !region || m.region === region;
-        return matchesQuery && matchesRegion;
-      });
-      filtered.forEach((m, i) => list.appendChild(municipalityCard(m, i)));
-      empty.hidden = filtered.length !== 0;
-    }
-
-    searchInput.addEventListener("input", draw);
-    regionSelect.addEventListener("change", draw);
-    draw();
   }
 
   /* ---------- დელეგატების გვერდი ---------- */
@@ -462,9 +401,6 @@
     );
 
     const actions = el("div", "profile-actions");
-    const muniBtn = el("a", "btn btn-ghost", "მუნიციპალიტეტის ნახვა");
-    muniBtn.href = "municipality.html?name=" + encodeURIComponent(d.municipality);
-    actions.appendChild(muniBtn);
     if (d.facebook) actions.appendChild(facebookIcon(d.facebook));
     copy.appendChild(actions);
 
@@ -525,72 +461,13 @@
     main.appendChild(body);
   }
 
-  /* ---------- მუნიციპალიტეტის პროფილი (municipality.html?name=) ---------- */
-
-  function renderMunicipalityProfile() {
-    const main = document.getElementById("municipalityPage");
-    if (!main) return;
-
-    const name = qs("name");
-    const m = municipalities.find((item) => item.name === name);
-
-    if (!m) {
-      main.innerHTML =
-        '<section class="section"><div class="container empty">' +
-        "<h2>მუნიციპალიტეტი ვერ მოიძებნა</h2>" +
-        "<p>ბმული, რომელსაც მიჰყევი, არასწორია ან მუნიციპალიტეტი აღარ არის ხელმისაწვდომი.</p>" +
-        '<a class="btn btn-primary" href="municipalities.html">მუნიციპალიტეტების სია →</a>' +
-        "</div></section>";
-      return;
-    }
-
-    const hero = el("section", "page-hero compact");
-    const heroInner = el("div", "container");
-    const back = el("a", "back-link", "← მუნიციპალიტეტები");
-    back.href = "municipalities.html";
-    back.addEventListener("click", function (e) {
-      if (window.history.length > 1 && document.referrer) {
-        e.preventDefault();
-        window.history.back();
-      }
-    });
-    heroInner.appendChild(back);
-    heroInner.appendChild(el("div", "eyebrow", m.region));
-    heroInner.appendChild(el("h1", null, m.name));
-    hero.appendChild(heroInner);
-
-    const body = el("section", "section");
-    const bodyInner = el("div", "container");
-    const list = delegatesFor(m.name);
-
-    const heading = el("div", "section-heading");
-    heading.appendChild(el("h2", null, "დელეგატები (" + list.length + ")"));
-    bodyInner.appendChild(heading);
-
-    if (list.length === 0) {
-      const empty = el("div", "empty");
-      empty.appendChild(el("h2", null, "დელეგატი ჯერ არ არის დამატებული"));
-      bodyInner.appendChild(empty);
-    } else {
-      const grid = el("div", "delegate-grid");
-      list.forEach((d) => grid.appendChild(delegateCard(d)));
-      bodyInner.appendChild(grid);
-    }
-
-    body.appendChild(bodyInner);
-    main.appendChild(hero);
-    main.appendChild(body);
-  }
-
   /* ---------- გაშვება ---------- */
 
   document.addEventListener("DOMContentLoaded", function () {
     initMenu();
     renderHome();
-    renderMunicipalitiesPage();
     renderDelegatesPage();
     renderDelegateProfile();
-    renderMunicipalityProfile();
     hydrateClickCounts();
   });
 })();

@@ -38,8 +38,6 @@ npm run dev
 
 ## გვერდები
 - `index.html` — მთავარი
-- `municipalities.html` — მუნიციპალიტეტები + ძებნა + რეგიონების ფილტრი
 - `delegates.html` — დელეგატები + ძებნა + რეგიონების ფილტრი
 - `delegate.html?id=1` — დელეგატის პროფილი
-- `municipality.html?name=თიანეთი` — მუნიციპალიტეტის პროფილი
 - `about.html` — პროექტის შესახებ

@@ -547,6 +547,12 @@ select {
   margin: 0 0 14px;
 }
 
+.delegate-location {
+  color: var(--blue) !important;
+  font-size: 13px !important;
+  font-weight: 800;
+}
+
 .small-link {
   font-size: 11px;
 }
