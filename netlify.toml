@@ -1,0 +1,62 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# ─────────────────────────────────────────
+#  API redirects — HTTP method + body preserved (status 200 = proxy)
+# ─────────────────────────────────────────
+
+# Public click endpoints
+[[redirects]]
+  from  = "/api/clicks/:id"
+  to    = "/.netlify/functions/clicks?id=:id"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from  = "/api/clicks"
+  to    = "/.netlify/functions/clicks"
+  status = 200
+  force  = true
+
+# Admin auth
+[[redirects]]
+  from  = "/api/admin/login"
+  to    = "/.netlify/functions/admin-login"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from  = "/api/admin/check"
+  to    = "/.netlify/functions/admin-check"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from  = "/api/admin/logout"
+  to    = "/.netlify/functions/admin-logout"
+  status = 200
+  force  = true
+
+# Admin data
+[[redirects]]
+  from  = "/api/admin/stats"
+  to    = "/.netlify/functions/admin-stats"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from  = "/api/admin/clicks/:id"
+  to    = "/.netlify/functions/admin-edit?id=:id"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from  = "/api/admin/change-password"
+  to    = "/.netlify/functions/admin-change-password"
+  status = 200
+  force  = true
+

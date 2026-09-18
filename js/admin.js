@@ -16,16 +16,9 @@
   /* ---------- დამხმარე მეთოდები ---------- */
 
   function getApiBase() {
-    if (typeof window !== "undefined" && window.location) {
-      if (window.location.protocol === "http:" || window.location.protocol === "https:") {
-        if (window.location.port === "3000") return "";
-        if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-          return "";
-        }
-        return "http://localhost:3000";
-      }
-    }
-    return "http://localhost:3000";
+    // Netlify redirects in netlify.toml proxy /api/* → /.netlify/functions/*
+    // This works both in production (Netlify) and local dev (netlify dev).
+    return "";
   }
 
   function getToken() {
@@ -198,15 +191,24 @@
 
   async function loadStats() {
     cachedCounts = {};
+    const statsError = document.getElementById("statsError");
+    if (statsError) statsError.style.display = "none";
 
     try {
       const res = await fetch(getApiBase() + "/api/admin/stats", { headers: authHeaders() });
       if (res.ok) {
         const data = await res.json();
         cachedCounts = data.counts || {};
+      } else if (statsError) {
+        statsError.textContent = "ნახვების ჩატვირთვა ვერ მოხერხდა. ხელახლა შედი ან განაახლე გვერდი.";
+        statsError.style.display = "block";
       }
     } catch (err) {
       cachedCounts = {};
+      if (statsError) {
+        statsError.textContent = "სერვერთან დაკავშირება ვერ მოხერხდა. გაუშვი Node სერვერი და განაახლე გვერდი.";
+        statsError.style.display = "block";
+      }
     }
 
     buildDelegatesData();
