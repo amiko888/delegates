@@ -112,9 +112,16 @@ select {
 .brand-logo {
   height: 42px;
   width: auto;
-  max-width: 180px;
+  max-width: 48px;
   object-fit: contain;
   display: block;
+}
+
+.brand-name {
+  max-width: 300px;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
 }
 
 .brand strong {
@@ -954,17 +961,25 @@ select {
     height: 72px;
   }
 
+  .nav,
+  .brand {
+    gap: 8px;
+  }
+
   .nav-links {
     top: 72px;
   }
 
   .brand-logo {
-  height: 42px;
-  width: auto;
-  max-width: 180px;
-  object-fit: contain;
-  display: block;
-}
+    height: 36px;
+    max-width: 42px;
+  }
+
+  .brand-name {
+    max-width: min(210px, calc(100vw - 145px));
+    font-size: 12px;
+    line-height: 1.2;
+  }
 
 .brand strong {
     font-size: 12px;
