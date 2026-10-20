@@ -395,7 +395,7 @@ const delegatesData = [
   {
     "id": 45,
     "name": "ნინი კაკაჩია",
-    "municipality": "წaლენჯიხa",
+    "municipality": "წალენჯიხა",
     "region": "სამეგრელო-ზემო სვანეთი",
     "image": "assets/delegates/nini kakachia.jpg",
     "facebook": "https://www.facebook.com/ninikooos",

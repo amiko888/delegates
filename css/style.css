@@ -109,6 +109,14 @@ select {
   font-weight: 800;
 }
 
+.brand-logo {
+  height: 42px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+}
+
 .brand strong {
   display: block;
   font-size: 14px;
@@ -950,7 +958,15 @@ select {
     top: 72px;
   }
 
-  .brand strong {
+  .brand-logo {
+  height: 42px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
+}
+
+.brand strong {
     font-size: 12px;
   }
 
