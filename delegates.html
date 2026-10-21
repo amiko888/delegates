@@ -1,17 +1,72 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ახალგაზრდული საქმიანობის დელეგატთა ქსელი საქართველოს მუნიციპალიტეტებში">
-<title>დელეგატები | ახალგაზრდული საქმიანობის დელეგატთა ქსელი</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ახალგაზრდული საქმიანობის დელეგატთა ქსელი საქართველოს მუნიციპალიტეტებში">
+  <title>დელეგატები | ახალგაზრდული საქმიანობის დელეგატთა ქსელი</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<header class="site-header"><nav class="nav container"><a class="brand" href="index.html"><img src="assets/logo.png" alt="" class="brand-logo"><span class="brand-name">ახალგაზრდული საქმიანობის დელეგატთა ქსელი</span></a><button class="menu-toggle" aria-label="მენიუს გახსნა">☰</button><div class="nav-links"><a href="index.html">მთავარი</a><a class="active" href="delegates.html">დელეგატები</a><a href="about.html">პროექტის შესახებ</a></div></nav></header>
-<main><section class="page-hero"><div class="container"><div class="eyebrow">ახალგაზრდული საქმიანობის დელეგატთა ქსელი</div><h1>დელეგატები</h1><p>გაიცანი ახალგაზრდული საქმიანობის დელეგატები საქართველოს სხვადასხვა მუნიციპალიტეტიდან.</p></div></section>
-<section class="section"><div class="container"><div class="toolbar"><label class="search"><span>⌕</span><input id="delegateSearch" type="search" placeholder="მოძებნე სახელი ან მუნიციპალიტეტი..."></label><select id="delegateRegionFilter"><option value="">ყველა რეგიონი</option></select></div><div class="delegate-grid" id="delegateList"></div><div class="empty" id="delegateEmpty" hidden>დელეგატი ვერ მოიძებნა.</div></div></section></main>
-<footer class="footer"><div class="container footer-inner"><div><strong>ახალგაზრდული საქმიანობის დელეგატთა ქსელი</strong></div><div class="footer-links"><a href="index.html">მთავარი</a><a href="about.html">პროექტის შესახებ</a><a href="admin.html" style="opacity: 0.65;">ადმინი 🔒</a></div></div><div class="container copyright">© 2026 ახალგაზრდული საქმიანობის დელეგატთა ქსელი · შექმნილია Amiko Davlasheridze-ის მიერ</div></footer>
-<script src="js/data.js"></script><script src="js/main.js"></script>
-</body></html>
+  <header class="site-header">
+    <nav class="nav container">
+      <a class="brand" href="index.html">
+        <img src="assets/logo.png" alt="" class="brand-logo">
+        <span class="brand-name">ახალგაზრდული საქმიანობის დელეგატთა ქსელი</span>
+      </a>
+      <button class="menu-toggle" aria-label="მენიუს გახსნა">☰</button>
+      <div class="nav-links">
+        <a href="index.html">მთავარი</a>
+        <a class="active" href="delegates.html">დელეგატები</a>
+        <a href="about.html">პროექტის შესახებ</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="eyebrow">ახალგაზრდული საქმიანობის დელეგატთა ქსელი</div>
+        <h1>დელეგატები</h1>
+        <p>გაიცანი ახალგაზრდული საქმიანობის დელეგატები საქართველოს სხვადასხვა მუნიციპალიტეტიდან.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="toolbar">
+          <label class="search">
+            <span>⌕</span>
+            <input id="delegateSearch" type="search" placeholder="მოძებნე სახელი ან მუნიციპალიტეტი...">
+          </label>
+          <select id="delegateRegionFilter">
+            <option value="">ყველა რეგიონი</option>
+          </select>
+        </div>
+        <div class="delegate-grid" id="delegateList"></div>
+        <div class="empty" id="delegateEmpty" hidden>დელეგატი ვერ მოიძებნა.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div><strong>ახალგაზრდული საქმიანობის დელეგატთა ქსელი</strong></div>
+      <div class="footer-links">
+        <a href="index.html">მთავარი</a>
+        <a href="about.html">პროექტის შესახებ</a>
+        <a href="admin.html" style="opacity: 0.65;">ადმინი 🔒</a>
+      </div>
+    </div>
+    <div class="container copyright">
+      © 2026 ახალგაზრდული საქმიანობის დელეგატთა ქსელი · შექმნილია Amiko Davlasheridze-ის მიერ
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

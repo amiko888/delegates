@@ -1028,6 +1028,10 @@ select {
     font-size: 29px;
   }
 
+  .about-main h2 {
+    font-size: 32px;
+  }
+
   .municipality-grid,
   .delegate-grid {
     grid-template-columns: 1fr;
