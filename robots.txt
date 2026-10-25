@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://delegatess.vercel.app/sitemap.xml

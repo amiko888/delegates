@@ -338,18 +338,43 @@
     const main = document.getElementById("delegatePage");
     if (!main) return;
 
+    main.innerHTML = "";
     const id = Number(qs("id"));
     const d = delegates.find((item) => item.id === id);
 
     if (!d) {
       main.innerHTML =
         '<section class="section"><div class="container empty">' +
-        "<h2>დელეგატი ვერ მოიძებნა</h2>" +
+        "<h1>დელეგატი ვერ მოიძებნა</h1>" +
         "<p>ბმული, რომელსაც მიჰყევი, არასწორია ან დელეგატი აღარ არის ხელმისაწვდომი.</p>" +
         '<a class="btn btn-primary" href="delegates.html">დელეგატების სია →</a>' +
         "</div></section>";
       return;
     }
+
+    const profileUrl = "https://delegatess.vercel.app/delegate.html?id=" + encodeURIComponent(d.id);
+    let profileTitle = d.name + " | ახალგაზრდული საქმიანობის დელეგატი";
+    while (profileTitle.length < 50) profileTitle += " საქართველოში";
+    profileTitle = profileTitle.slice(0, 60);
+    const biography = (d.bio || "").replace(/\s+/g, " ").trim();
+    const descriptionStart = d.name + " არის " + d.municipality + "-ის ახალგაზრდული საქმიანობის დელეგატი. ";
+    let profileDescription = (descriptionStart + biography).slice(0, 160);
+    if (profileDescription.length < 140) {
+      const additionalDescription = " გაეცანით მის საქმიანობასა და ახალგაზრდებთან მუშაობის გამოცდილებას საქართველოში.";
+      while (profileDescription.length < 140) {
+        profileDescription += additionalDescription;
+      }
+      profileDescription = profileDescription.slice(0, 160);
+    }
+    document.title = profileTitle;
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = profileUrl;
+    document.querySelector('meta[name="description"]').content = profileDescription;
+    document.querySelector('meta[property="og:title"]').content = profileTitle;
+    document.querySelector('meta[property="og:description"]').content = profileDescription;
+    document.querySelector('meta[property="og:url"]').content = profileUrl;
+    document.querySelector('meta[name="twitter:title"]').content = profileTitle;
+    document.querySelector('meta[name="twitter:description"]').content = profileDescription;
 
     const hero = el("section", "profile-hero");
     const heroContainer = el("div", "container");
